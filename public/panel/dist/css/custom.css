@@ -1,0 +1,9 @@
+.view-page table td{
+    border-top: none !important;
+}
+.add-button-container {
+    text-align: right; 
+}
+.add-button-container button{
+    width: 120px;
+}
