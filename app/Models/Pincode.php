@@ -14,6 +14,9 @@ class Pincode extends Model
     protected $table = 'pincode';  // Specify table name
     protected $fillable = ['pincode', 'postname','district_id','created_at','updated_at']; 
     
+    protected $casts = [
+        'pincode' => 'string',
+    ];
     public function district()
     {
         return $this->belongsTo(District::class, 'district_id', 'id');

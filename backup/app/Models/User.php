@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Pincode;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -20,14 +21,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'phone_number',
-        'otp',
-        'about',
-        'image',
-        'country_code'
+        'name', 'phone_number', 'country_code', 'otp', 'about', 'image', 'email', 'email_verified_at', 'otp_verified', 'password', 'remember_token', 'fcm_token', 'device_id', 'created_at', 'updated_at', 'deleted_at', 'pincode', 'status'
     ];
 
     /**
@@ -48,7 +42,9 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'pincode' => 'string',
     ];
+    
     
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -65,5 +61,11 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getJWTCustomClaims() {
         return [];
-    }        
+    }   
+    public function pincodeDetails()
+    {
+        return $this->belongsTo(Pincode::class, 'pincode', 'pincode');
+    } 
+    
+         
 }

@@ -12,6 +12,7 @@ use App\Http\Controllers\StateController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PincodeController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,7 @@ use App\Http\Controllers\PincodeController;
 | to the "web" middleware group. Routes for admin panel login.
 |
 */
-
+Route::get('/', [LoginController::class, 'login'])->name('login');
 Route::get('/load-content/{page}', [ContentController::class, 'loadContent'])->name('load.content');
 Route::get('admin/login', [LoginController::class, 'login'])->name('login'); // Add the 'login' route name
 Route::get('admin/', [LoginController::class, 'login']);
@@ -95,11 +96,14 @@ Route::get('/admin/pincode/create', [PincodeController::class, 'create'])->name(
 Route::post('/admin/import-pincode', [PincodeController::class, 'importPincode'])->name('admin.import-pincode');
 
 Route::post('/admin/planList', [PlanController::class, 'planList'])->name('admin.planList');
-Route::get('/admin/viewPlan/{id}', [PlanController::class, 'view'])->name('view.plan');
 Route::post('/admin/addPlan', [PlanController::class, 'store'])->name('add.plan');
+Route::get('/admin/viewPlan/{id}', [PlanController::class, 'view'])->name('view.plan');
 Route::get('/admin/editPlan/{id}', [PlanController::class, 'edit'])->name('admin.editPlan');
 Route::post('/admin/updatePlan/{id}', [PlanController::class, 'update'])->name('admin.updatePlan');
 Route::delete('/admin/deletePlan/{id}', [PlanController::class, 'delete'])->name('admin.deletePlan');
 
+Route::post('/admin/userList', [UserController::class, 'userList'])->name('admin.userList');
+Route::get('/admin/viewUser/{id}', [UserController::class, 'view'])->name('view.user');
+Route::get('/admin/editUser/{id}', [UserController::class, 'edit'])->name('admin.editUser');
 
 Auth::routes();
