@@ -8137,9 +8137,9 @@ body {
   font-size: 16px;
   line-height: 1.8;
   font-weight: normal;
-  background: #343a40;
-  /* color: #000;  
-  background-image: url('../images/background.jpg'); 
+  /* background: #343a40; */
+  /* /* color: #000;   */
+  background-image: url('../images/background.png'); 
   background-size: cover; 
   background-position: center; 
   background-repeat: no-repeat; */
@@ -8168,7 +8168,9 @@ h1, h2, h3, h4, h5,
   background: #343a40 !important; }
 
 .ftco-section {
-  padding: 7em 0; }
+  padding: 7em 0; 
+
+}
 
 .ftco-no-pt {
   padding-top: 0; }
@@ -8187,7 +8189,7 @@ h1, h2, h3, h4, h5,
 
 .login-wrap {
   position: relative;
-  background: #fff;
+  background: #ffffff1f;
   border-radius: 10px;
   -webkit-box-shadow: 0px 10px 34px -15px rgba(0, 0, 0, 0.24);
   -moz-box-shadow: 0px 10px 34px -15px rgba(0, 0, 0, 0.24);
@@ -8195,17 +8197,17 @@ h1, h2, h3, h4, h5,
   .login-wrap h3 {
     font-weight: 700;
     font-size: 20px;
-    color: #343a40; }
+    color: #FFF; }
   .login-wrap .icon {
     width: 80px;
     height: 80px;
-    background: #343a40;
+    background: #FFF;
     border-radius: 50%;
     font-size: 30px;
     margin: 0 auto;
     margin-bottom: 10px; }
     .login-wrap .icon span {
-      color: #fff; }
+      color: #343a40; }
 
 .form-control {
   height: 48px;
