@@ -39,7 +39,7 @@
                   <th>Pincode</th>
                   <th>Created</th>
                   <th>Status</th>
-                  <th width="90">Action</th>
+                  <th width="60">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -88,8 +88,8 @@
                   <!-- Dynamic content loaded via JavaScript -->
               </div>
               <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary" id="saveChangesButton" style="display: none;">Save Changes</button>
+                  {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" id="saveChangesButton" style="display: none;">Save Changes</button> --}}
               </div>
           </div>
       </div>
@@ -98,98 +98,100 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
- 
-  $(document).ready(function(){
-      var table = $('#example1').DataTable({
-          processing: true,
-          serverSide: true,
-          ajax: {
-              url: "{{ url('/admin/userList') }}", // Updated URL
-              method: 'POST',
-              headers: {
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Ensure CSRF token is included
-              }
-          },
-          columns: [
-              { 
-                  data: null, 
-                  name: 'sl_no',
-                  render: function (data, type, row, meta) {
-                      return meta.row + meta.settings._iDisplayStart + 1; 
-                  },
-                  orderable: false, 
-                  searchable: false,
-                  class:"text-center"
-              },
-              { data: 'user_id', name: 'user_id' },
-              { data: 'name', name: 'name' },
-              { data: 'phone_number', name: 'phone_number' },
-              { data: 'state_name', name: 'state_name' },
-              { data: 'district_name', name: 'district_name' },
-              { data: 'pincode', name: 'pincode' },
-              { data: 'created_at', name: 'created_at' },
-              { data: 'status', name: 'status' },
-              { data: 'action', name: 'action', orderable: false, searchable: false }
-          ]
-      });
+        
+ $(document).ready(function () {
+    
+    var table = $('#example1').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "{{ url('/admin/userList') }}", // Updated URL
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Ensure CSRF token is included
+            }
+        },
+        columns: [
+            { 
+                data: null, 
+                name: 'sl_no',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1; 
+                },
+                orderable: false, 
+                searchable: false,
+                class:"text-center"
+            },
+            { data: 'user_id', name: 'user_id' },
+            { data: 'name', name: 'name' },
+            { data: 'phone_number', name: 'phone_number' },
+            { data: 'state_name', name: 'state_name' },
+            { data: 'district_name', name: 'district_name' },
+            { data: 'pincode', name: 'pincode' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'status', name: 'status' },
+            { data: 'action', name: 'action', orderable: false, searchable: false }
+        ]
+    });
+     
+      
+    
 
-  });
+    document.addEventListener("click", function (event) {
+    if (event.target && event.target.id === "saveStatusBtn") {
+        let userIdElement = document.getElementById("user_id");
+        let statusElement = document.getElementById("edit_status");
 
-  function editUser(userId) {
-  // Send an AJAX request to fetch user details
-  $.ajax({
-      url: '/admin/editUser/' + userId, // Adjust the route as needed
-      method: 'GET',
-      success: function(response) {
-          if (response.success) {
-              // Populate the modal with data from the response
-              $('#viewEditModalLabel').text('Edit User');
+        if (!userIdElement || !statusElement) {
+            console.error("User ID or status field not found.");
+            return;
+        }
 
-              // Fill input fields with the fetched data
-              $('#modalBodyContent').html(`
-                  <form id="editUserForm">
-                      @csrf
-                      <div class="form-group">
-                          <label for="edit_username">Username</label>
-                          <input type="text" class="form-control" id="edit_username" name="username" value="${response.data.name}" required>
-                      </div>
-                      <div class="form-group">
-                          <label for="edit_phone">Phone Number</label>
-                          <input type="text" class="form-control" id="edit_phone" name="phone_number" value="${response.data.phone_number}" required>
-                      </div>
-                      <div class="form-group">
-                          <label for="edit_pincode">Pincode</label>
-                          <input type="text" class="form-control" id="edit_pincode" name="pincode" value="${response.data.pincode ?? ''}" required>
-                      </div>
-                      <div class="form-group">
-                          <label for="edit_status">Status</label>
-                          <select class="form-control" id="edit_status" name="status" required>
-                              <option value="1" ${response.data.status == 1 ? 'selected' : ''}>Active</option>
-                              <option value="0" ${response.data.status == 0 ? 'selected' : ''}>Inactive</option>
-                          </select>
-                      </div>
-                  </form>
-              `);
+        let userId = userIdElement.value;
+        let status = statusElement.value;
 
-              // Show the Save Changes button
-              $('#saveChangesButton').show();
+        fetch("/admin/updateUserStatus", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+            },
+            body: JSON.stringify({ user_id: userId, status: status }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            $('#viewEditModal').modal('hide');
+            $('#example1').DataTable().ajax.reload(null, false);
+            if (data.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: "User status updated successfully!",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                });
+            } else {
+                
+                Swal.fire({
+                    title: "Error!",
+                    text: data.message,
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            Swal.fire({
+                title: "Oops!",
+                text: "Something went wrong. Try again!",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+        });
+    }
+});
 
-              // Bind the Save Changes button to update the user
-              $('#saveChangesButton').off('click').on('click', function() {
-                  updateUser(userId);
-              });
-
-              // Show the modal
-              $('#viewEditModal').modal('show');
-          } else {
-              Swal.fire('Error', response.message, 'error');
-          }
-      },
-      error: function() {
-          Swal.fire('Error', 'Unable to fetch user details', 'error');
-      }
-  });
-}
+});
 
   function handleAction(itemId,action) {
       
@@ -216,110 +218,6 @@
       });
   }
 
-
-// Function for editing a group
-  function editGroup(groupName, type, mobile) {
-      $('#actionModalLabel').text('Edit Group');
-      $('#modalBodyContent').html(`
-          <form id="editForm">
-              <div class="form-group">
-                  <label>Group Name</label>
-                  <input type="text" class="form-control" value="${groupName}">
-              </div>
-              <div class="form-group">
-                  <label>Type</label>
-                  <input type="text" class="form-control" value="${type}">
-              </div>
-              <div class="form-group">
-                  <label>Mobile</label>
-                  <input type="text" class="form-control" value="${mobile}">
-              </div>
-              <button type="submit" class="btn btn-primary">Save Changes</button>
-          </form>
-      `);
-      $('#actionModal').modal('show');
-  }
-
-  // Function for rejecting a group
-  function rejectGroup(id) {
-      Swal.fire({
-          title: 'Are you sure?',
-          text: "Do you want to reject this group?",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Yes, reject it!'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              // AJAX request to update the group status to rejected in the database
-              $.ajax({
-                  url: '/admin/group/reject/' + id,  // Ensure the correct route for reject action
-                  type: 'POST',
-                  data: {
-                      _token: '{{ csrf_token() }}'  // Include CSRF token
-                  },
-                  success: function(response) {
-                      // Show success message
-                      Swal.fire(
-                          'Rejected!',
-                          'The group has been rejected.',
-                          'success'
-                      );
-                     
-                      $('#example1').DataTable().ajax.reload();
-                  },
-                  error: function(xhr, status, error) {
-                      Swal.fire(
-                          'Error!',
-                          'There was an issue rejecting the group.',
-                          'error'
-                      );
-                  }
-              });
-          }
-      });
-  }
-
-  function approveGroup(id) {
-      Swal.fire({
-          title: 'Are you sure?',
-          text: "Do you want to approve this group?",
-          icon: 'success',
-          showCancelButton: true,
-          confirmButtonColor: '#28a745',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Yes, approve it!'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              // AJAX request to update the group status to rejected in the database
-              $.ajax({
-                  url: '/admin/group/approve/' + id,  // Ensure the correct route for reject action
-                  type: 'POST',
-                  data: {
-                      _token: '{{ csrf_token() }}'  // Include CSRF token
-                  },
-                  success: function(response) {
-                      // Show success message
-                      Swal.fire(
-                          'Approved!',
-                          'The group has been approved.',
-                          'success'
-                      );
-                      // $('#example1').DataTable().clear().draw();
-                      $('#example1').DataTable().ajax.reload();
-                  },
-                  error: function(xhr, status, error) {
-                      Swal.fire(
-                          'Error!',
-                          'There was an issue approving the group.',
-                          'error'
-                      );
-                  }
-              });
-          }
-      });
-  }
 
 
   
