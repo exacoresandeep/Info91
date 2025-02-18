@@ -105,5 +105,6 @@ Route::delete('/admin/deletePlan/{id}', [PlanController::class, 'delete'])->name
 Route::post('/admin/userList', [UserController::class, 'userList'])->name('admin.userList');
 Route::get('/admin/viewUser/{id}', [UserController::class, 'view'])->name('view.user');
 Route::get('/admin/editUser/{id}', [UserController::class, 'edit'])->name('admin.editUser');
+Route::post('/admin/updateUserStatus', [UserController::class, 'updateUserStatus'])->name('admin.updateUserStatus');
 
 Auth::routes();
