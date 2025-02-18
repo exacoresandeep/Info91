@@ -17,7 +17,8 @@ class ContentController extends Controller
             'first-category', 
             'second-category',
             'third-category',
-            'plan'
+            'plan',
+            'users',
         ];
 //  ,''
         if (!in_array($page, $validPages)) {

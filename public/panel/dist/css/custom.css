@@ -7,3 +7,34 @@
 .add-button-container button{
     width: 120px;
 }
+.layout-navbar-fixed .wrapper .sidebar-dark-primary .brand-link:not([class*=navbar]) {
+    background-color: #ffffff;
+}
+.content-header .container-fluid{
+    background-color: #ff7500 !important;
+    padding: 10px;
+    color: #ffffff !important;
+}
+.main-footer, .main-footer a{
+    background-color: #ff7500 !important;
+    color: #ffffff !important;
+}
+.breadcrumb,.breadcrumb a,.breadcrumb .active{
+    color: #ffffff !important;
+}
+.navbar,.sidebar,.form-control-sidebar,.btn-sidebar,.form-control{
+    background-color: #09093F !important;
+    color:#ffffff;
+}
+.navbar a{
+    color:#ffffff;
+}
+.card-body,.card-body .form-control,.paginate_button a{
+    background-color: #09093F !important;
+}
+.content-wrapper{
+    background-color: #1a1a48 !important;
+}
+.modal-content {
+    background-color: #161640 !important;
+}
