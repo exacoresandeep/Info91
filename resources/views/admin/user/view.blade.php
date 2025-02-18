@@ -29,6 +29,15 @@
     </tr>
     <tr>
         <th>Status</th>
-        <td>: {{ $user->status == 1 ? 'Active' : 'Inactive' }}</td>
+        <td>
+            <input type="hidden" id="user_id" value="{{ $user->id }}">
+            <select class="form-control" id="edit_status">
+                <option value="1" {{ $user->status == 1 ? 'selected' : '' }}>Active</option>
+                <option value="0" {{ $user->status == 0 ? 'selected' : '' }}>Inactive</option>
+                <option value="2" {{ $user->status == 2 ? 'selected' : '' }}>Blocked</option>
+            </select>
+        </td>
     </tr>
 </table>
+
+<button type="button" class="btn btn-primary float-right" id="saveStatusBtn">Save Changes</button>

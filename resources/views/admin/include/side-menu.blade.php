@@ -2,7 +2,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="" class="brand-link text-center">
-      <img src="{{asset('cs/assets/Logo.svg')}}" alt="info91 Logo" width="95" style="">
+      <img src="{{asset('cs/assets/Logo_dashboard.svg')}}" alt="info91 Logo" width="95" style="">
       <span class="brand-text font-weight-light"></span>
     </a>
 
