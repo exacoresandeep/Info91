@@ -13,9 +13,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('public/group_profile_pic/{filename}', function ($filename) {
+    $path = public_path('group_profile_pic/' . $filename);
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    return response()->file($path);
+});
+Route::get('public/group_banner_images/{filename}', function ($filename) {
+    $path = public_path('group_banner_images/' . $filename);
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    return response()->file($path);
+});
+Route::get('public/group_cover_pic/{filename}', function ($filename) {
+    $path = public_path('group_cover_pic/' . $filename);
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    return response()->file($path);
+});
+Route::get('public/profile_pic/{filename}', function ($filename) {
+    $path = public_path('profile_pic/' . $filename);
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    return response()->file($path);
+});
 
 Auth::routes();
 
