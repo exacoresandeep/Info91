@@ -277,6 +277,11 @@ class AuthController extends Controller
             return response()->json(['message' =>$validator->errors(),'statusCode'=>422,'data'=>[],'success'=>'error'],422);
         }
         $smsres=[];
+        $blocked=User::where('phone_number',$request->phone_number)->where('status',"2")->exists();
+        if($blocked===true){    
+            $message="You have been blocked. Please contact administrator!";
+            return response()->json(['message'=>$message, 'statusCode' => 400,'data'=>[],'success' => 'error'], 400);
+        }
         $check_exist=User::where('phone_number',$request->phone_number)->exists();
         $device_exist=User::where('phone_number',$request->phone_number)
             ->where('device_id',$request->device_id)->exists();

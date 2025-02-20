@@ -42,7 +42,7 @@
               </a>
           </li>
           <li class="nav-item">
-              <a href="approve-pending" class="nav-link">
+              <a href="group-approvals" class="nav-link">
                   <i class="nav-icon fas fa-clock"></i>
                   <p>Approve Pending</p>
               </a>
