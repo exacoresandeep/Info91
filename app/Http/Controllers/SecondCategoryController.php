@@ -32,7 +32,7 @@ class SecondCategoryController extends Controller
             })->orderBy('status', 'desc')->orderBy('second_category_name', 'asc')
                 ->orderBy($orderColumn, $orderBy);
 
-            // Apply search filter if any search value is provided
+            // Apply search filter if any search value
             if ($searchValue) {
                 $query->where(function($query) use ($searchValue) {
                     $query->where('second_category_name', 'like', '%'.$searchValue.'%');

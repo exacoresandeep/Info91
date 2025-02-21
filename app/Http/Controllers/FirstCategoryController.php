@@ -9,6 +9,7 @@ class FirstCategoryController extends Controller
 {
     public function firstCateoryList(Request $request)
     {    
+        
         if ($request->ajax()) {
             $pageNumber = ($request->start / $request->length) + 1;
             $pageLength = $request->length;

@@ -41,7 +41,7 @@ class ThirdCategoryController extends Controller
             ->orderBy('third_category_name', 'asc')
             ->orderBy($orderColumn, $orderBy);
 
-            // Apply search filter if any search value is provided
+            // Apply search filter if any search value i
             if ($searchValue) {
                 $query->where(function($query) use ($searchValue) {
                     $query->where('third_category_name', 'like', '%'.$searchValue.'%');
