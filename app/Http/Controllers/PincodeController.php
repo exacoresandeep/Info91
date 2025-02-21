@@ -61,7 +61,7 @@ class PincodeController extends Controller
                 });
             })
             ->orderBy('status', 'desc')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('postname', 'asc')
             ->orderBy($orderColumn, $orderBy);
 
             // Apply search filter if any search value is provided

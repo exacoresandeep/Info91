@@ -54,7 +54,7 @@ class DistrictController extends Controller
             $query = District::where('status', '!=', '2')
             ->when($stateId, function ($query) use ($stateId) {
                 return $query->where('state_id', $stateId); // Apply filter
-            })->orderBy('status', 'desc')->orderBy('created_at', 'desc')
+            })->orderBy('status', 'desc')->orderBy('district_name', 'asc')
                 ->orderBy($orderColumn, $orderBy);
 
             // Apply search filter if any search value is provided

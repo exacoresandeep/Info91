@@ -38,7 +38,7 @@ class ThirdCategoryController extends Controller
                 });
             })
             ->orderBy('status', 'desc')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('third_category_name', 'asc')
             ->orderBy($orderColumn, $orderBy);
 
             // Apply search filter if any search value is provided
@@ -129,7 +129,12 @@ class ThirdCategoryController extends Controller
     
     public function update(Request $request, $id) {
         $category = ThirdCategory::find($id);
-    
+        if (ThirdCategory::where('third_category_name', $request->third_category_name)
+            ->where('second_category_id', $request->second_category_id)
+            ->where('id', "!=",$id)
+            ->exists()) {
+            return response()->json(['success' => false, 'message' => 'This category already exists under the selected second category.']);
+        }
         if ($category) {
             $category->third_category_name = $request->input('third_category_name');
             $category->status = $request->input('status');
@@ -149,7 +154,11 @@ class ThirdCategoryController extends Controller
             'second_category_id' => 'required|exists:second_categories,id',
             'status' => 'required',
         ]);
-
+        if (ThirdCategory::where('third_category_name', $request->third_category_name)
+            ->where('second_category_id', $request->second_category_id)
+            ->exists()) {
+            return response()->json(['success' => false, 'message' => 'This category already exists under the selected second category.']);
+        }
         try {
             ThirdCategory::create([
                 'third_category_name' => $request->third_category_name,
