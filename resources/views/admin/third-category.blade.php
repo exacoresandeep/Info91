@@ -295,6 +295,7 @@
                             <div class="form-group">
                                 <label for="edit_third_category_name">Category Name</label>
                                 <input type="text" class="form-control" id="edit_third_category_name" name="third_category_name" value="${response.data.third_category_name}" required>
+                                <input type="hidden" class="form-control" id="second_category_id" name="second_category_id" value="${response.data.second_category_id}" required>
                             </div>
                             <div class="form-group">
                                 <label for="edit_status">Status</label>

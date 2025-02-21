@@ -29,10 +29,10 @@ class SecondCategoryController extends Controller
             $query = SecondCategory::where('status', '!=', '2')
             ->when($firstCategoryId, function ($query) use ($firstCategoryId) {
                 return $query->where('first_category_id', $firstCategoryId); // Apply filter
-            })->orderBy('status', 'desc')->orderBy('created_at', 'desc')
+            })->orderBy('status', 'desc')->orderBy('second_category_name', 'asc')
                 ->orderBy($orderColumn, $orderBy);
 
-            // Apply search filter if any search value is provided
+            // Apply search filter if any search value
             if ($searchValue) {
                 $query->where(function($query) use ($searchValue) {
                     $query->where('second_category_name', 'like', '%'.$searchValue.'%');
@@ -122,7 +122,12 @@ class SecondCategoryController extends Controller
     
     public function update(Request $request, $id) {
         $category = SecondCategory::find($id);
-    
+        if (SecondCategory::where('second_category_name', $request->second_category_name)
+            ->where('first_category_id', $request->first_category_id)
+            ->where('id', "!=",$id)
+            ->exists()) {
+            return response()->json(['success' => false, 'message' => 'This category already exists under the selected first category.']);
+        }
         if ($category) {
             $category->second_category_name = $request->input('second_category_name');
             $category->status = $request->input('status');
@@ -136,13 +141,16 @@ class SecondCategoryController extends Controller
     
     public function store(Request $request)
     {
-        // dd($request);
         $request->validate([
             'second_category_name' => 'required|string|max:255',
             'first_category_id' => 'required|exists:first_categories,id',
             'status' => 'required',
         ]);
-
+        if (SecondCategory::where('second_category_name', $request->second_category_name)
+            ->where('first_category_id', $request->first_category_id)
+            ->exists()) {
+            return response()->json(['success' => false, 'message' => 'This category already exists under the selected first category.']);
+        }
         try {
             SecondCategory::create([
                 'second_category_name' => $request->second_category_name,
