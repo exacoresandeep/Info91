@@ -9,6 +9,7 @@ class FirstCategoryController extends Controller
 {
     public function firstCateoryList(Request $request)
     {    
+        
         if ($request->ajax()) {
             $pageNumber = ($request->start / $request->length) + 1;
             $pageLength = $request->length;
@@ -25,7 +26,7 @@ class FirstCategoryController extends Controller
             ];
             $orderColumn = $columns[$orderColumnIndex] ?? 'created_at';
 
-            $query = FirstCategory::where('status','!=','2')->orderBy('status', 'desc')->orderBy('created_at', 'desc')
+            $query = FirstCategory::where('status','!=','2')->orderBy('status', 'desc')->orderBy('first_category_name', 'asc')
                 ->orderBy($orderColumn, $orderBy);
 
             // Apply search filter if any search value is provided
@@ -113,6 +114,9 @@ class FirstCategoryController extends Controller
         $category = FirstCategory::find($id);
     
         if ($category) {
+            if (FirstCategory::where('first_category_name', $request->first_category_name)->where("id","!=",$id)->exists()) {
+                return response()->json(['success' => false, 'message' => 'Category name already exists.']);
+            }
             $category->first_category_name = $request->input('first_category_name');
             $category->status = $request->input('status');
             $category->save();
@@ -129,6 +133,11 @@ class FirstCategoryController extends Controller
             'first_category_name' => 'required|string|max:255',
             'status' => 'required',
         ]);
+    
+        // Check if category already exists
+        if (FirstCategory::where('first_category_name', $request->first_category_name)->exists()) {
+            return response()->json(['success' => false, 'message' => 'Category name already exists.']);
+        }
 
         try {
             FirstCategory::create([

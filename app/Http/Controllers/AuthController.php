@@ -2001,8 +2001,8 @@ class AuthController extends Controller
                         $fcmTokens = $NotificationuserList->pluck('fcm_token')->toArray();
 
                        
-                        $this->sendMultiplePushNotifications($fcmTokens,$request->group_id,$group_details->group_name,$messageContent,$request->type,now());
-// dd($x);
+                       // $this->sendMultiplePushNotifications($fcmTokens,$request->group_id,$group_details->group_name,$messageContent,$request->type,now());
+
 
                         $authUser = (object) [
                             'user_id' => auth()->id(),

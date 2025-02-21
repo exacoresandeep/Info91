@@ -25,7 +25,7 @@ class StateController extends Controller
             ];
             $orderColumn = $columns[$orderColumnIndex] ?? 'created_at';
 
-            $query = State::where('status', '!=', '2')->orderBy('status', 'desc')->orderBy('created_at', 'desc')
+            $query = State::where('status', '!=', '2')->orderBy('status', 'desc')->orderBy('state_name', 'asc')
                 ->orderBy($orderColumn, $orderBy);
 
             if ($searchValue) {
