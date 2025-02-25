@@ -579,6 +579,7 @@ class AuthController extends Controller
                 if (Schema::hasTable($groupuserTable)) {
                     $isUserInGroup = DB::table($groupuserTable)
                         ->where('user_id', $userId)
+                        ->where('status', "!=", '0')
                         ->exists();
     
                     if ($isUserInGroup) {
@@ -961,7 +962,7 @@ class AuthController extends Controller
 
             $user = auth()->user();
             if($user){
-                $data = FirstCategory::select('id as first_category_id','first_category_name')->get();
+                $data = FirstCategory::select('id as first_category_id','first_category_name')->orderBy('first_category_name','asc')->get();
             }
             else{
                 $data=[];
@@ -998,6 +999,7 @@ class AuthController extends Controller
                     }])
                     ->select('id as second_category_id', 'second_category_name', 'first_category_id') // Select fields from SecondCategory
                     ->where('first_category_id', $id)
+                    ->orderBy('second_category_name','asc')
                     ->get()
                     ->map(function ($item) {
                         unset($item->firstCategory->id);
@@ -1039,6 +1041,7 @@ class AuthController extends Controller
                     }])
                     ->select('id as third_category_id', 'third_category_name', 'second_category_id') // Select fields from ThirdCategory
                     ->where('second_category_id', $id) // Filter by second_category_id
+                    ->orderBy('third_category_name','asc')
                     ->get()
                     ->map(function ($item) {
                         unset($item->SecondCategory->id);
@@ -2000,9 +2003,10 @@ class AuthController extends Controller
                        // dd($NotificationuserList);
                         $fcmTokens = $NotificationuserList->pluck('fcm_token')->toArray();
 
-                       
-                       // $this->sendMultiplePushNotifications($fcmTokens,$request->group_id,$group_details->group_name,$messageContent,$request->type,now());
-
+                        if(!empty($fcmTokens))
+                        {
+                            $this->sendMultiplePushNotifications($fcmTokens,$request->group_id,$group_details->group_name,$messageContent,$request->type,now());
+                        }
 
                         $authUser = (object) [
                             'user_id' => auth()->id(),

@@ -42,6 +42,14 @@ Route::get('public/profile_pic/{filename}', function ($filename) {
     return response()->file($path);
 });
 
+Route::get('public/upload_files/{filename}', function ($filename) {
+    $path = public_path('upload_files/' . $filename);
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    return response()->file($path);
+});
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
