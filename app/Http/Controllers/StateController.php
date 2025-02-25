@@ -145,7 +145,7 @@ class StateController extends Controller
 
     public function list()
     {
-        $states = State::select('id', 'state_name as name')->get();
+        $states = State::select('id', 'state_name as name')->orderBy("name","asc")->get();
 
         if ($states->isEmpty()) {
             return response()->json(['success' => false, 'message' => 'No states found.']);
