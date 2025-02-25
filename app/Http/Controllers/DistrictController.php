@@ -183,7 +183,7 @@ class DistrictController extends Controller
     {
         $state_id = $request->input('state_id');
         $district = District::where('state_id',$state_id)
-        ->select('id', 'district_name as name')->get();
+        ->select('id', 'district_name as name')->orderBy("name","asc")->get();
         
         if ($district->isEmpty()) {
             return response()->json(['success' => false, 'message' => 'No district found.']);

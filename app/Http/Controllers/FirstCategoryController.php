@@ -154,7 +154,7 @@ class FirstCategoryController extends Controller
     //for second category pageSe
     public function list()
     {
-        $categories = FirstCategory::select('id', 'first_category_name as name')->get();
+        $categories = FirstCategory::select('id', 'first_category_name as name')->orderBy("name","asc")->get();
         
         if ($categories->isEmpty()) {
             return response()->json(['success' => false, 'message' => 'No categories found.']);

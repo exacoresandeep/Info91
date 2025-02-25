@@ -168,7 +168,7 @@ class SecondCategoryController extends Controller
     {
         $firstCategoryId = $request->input('first_category_id');
         $categories = SecondCategory::where('first_category_id',$firstCategoryId)
-        ->select('id', 'second_category_name as name')->get();
+        ->select('id', 'second_category_name as name')->orderBy("name","asc")->get();
         
         if ($categories->isEmpty()) {
             return response()->json(['success' => false, 'message' => 'No categories found.']);
